@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🍂 가을 타로 운세 🍂</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Noto Sans KR', sans-serif;
+            min-height: 100vh;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* 가을 배경 */
+        .autumn-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to bottom, 
+                #8B4513 0%,
+                #CD853F 30%,
+                #DEB887 60%,
+                #F4A460 100%);
+            z-index: -2;
+        }
+
+        /* 낙엽 애니메이션 */
+        .leaf {
+            position: fixed;
+            width: 30px;
+            height: 30px;
+            background: transparent;
+            pointer-events: none;
+            z-index: -1;
+            animation: fall linear infinite;
+        }
+
+        @keyframes fall {
+            0% {
+                transform: translateY(-10vh) rotate(0deg);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(110vh) rotate(360deg);
+                opacity: 0.3;
+            }
+        }
+
+        /* 컨테이너 */
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* 헤더 */
+        .header {
+            text-align: center;
+            margin: 40px 0;
+            color: white;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            animation: fadeIn 1s ease-in;
+        }
+
+        .header p {
+            font-size: 1.2em;
+            opacity: 0.9;
+        }
+
+        /* 카드 영역 */
+        .card-area {
+            text-align: center;
+            margin: 50px 0;
+        }
+
+        .card-container {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            flex-wrap: wrap;
+            margin: 30px 0;
+        }
+
+        .tarot-card {
+            width: 150px;
+            height: 250px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 15px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3em;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .tarot-card::before {
+            content: '🍂';
+            position: absolute;
+            font-size: 4em;
+            opacity: 0.2;
+            animation: rotate 10s linear infinite;
+        }
+
+        @keyframes rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        .tarot-card:hover {
+            transform: translateY(-20px) scale(1.05);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+        }
+
+        .tarot-card.flipped {
+            background: white;
+            animation: flip 0.6s ease;
+        }
+
+        @keyframes flip {
+            0% { transform: rotateY(0deg); }
+            50% { transform: rotateY(90deg); }
+            100% { transform: rotateY(0deg); }
+        }
+
+        /* 결과 영역 */
+        .result-area {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 30px;
+            margin: 30px 0;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+            display: none;
+            animation: slideUp 0.5s ease;
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .result-area.show {
+            display: block;
+        }
+
+        .result-title {
+            font-size: 2em;
+            color: #764ba2;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .result-emoji {
+            font-size: 4em;
+            text-align: center;
+            margin: 20px 0;
+        }
+
+        .result-content {
+            font-size: 1.2em;
+            line-height: 1.8;
+            color: #333;
+            text-align: center;
+        }
+
+        .result-detail {
+            margin-top: 20px;
+            padding: 20px;
+            background: rgba(102, 126, 234, 0.1);
+            border-radius: 10px;
+            border-left: 4px solid #667eea;
+        }
+
+        /* 버튼 */
+        .btn {
+            display: inline-block;
+            padding: 15px 40px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 50px;
+            font-size: 1.2em;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.2);
+            margin: 20px 10px;
+        }
+
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+        }
+
+        /* 애니메이션 */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* 반응형 */
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2em;
+            }
+            
+            .tarot-card {
+                width: 120px;
+                height: 200px;
+            }
+            
+            .result-content {
+                font-size: 1em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="autumn-bg"></div>
+    
+    <div class="container">
+        <div class="header">
+            <h1>🍂 가을 타로 운세 🍂</h1>
+            <p>낙엽이 떨어지는 가을날, 당신의 운세를 확인해보세요</p>
+        </div>
+
+        <div class="card-area">
+            <h2 style="color: white; text-shadow: 2px 2px 4px rgba(0,0,0,0.3); margin-bottom: 20px;">
+                마음을 집중하고 카드 3장을 선택하세요
+            </h2>
+            <div class="card-container" id="cardContainer">
+                <div class="tarot-card" onclick="selectCard(0)">🎴</div>
+                <div class="tarot-card" onclick="selectCard(1)">🎴</div>
+                <div class="tarot-card" onclick="selectCard(2)">🎴</div>
+                <div class="tarot-card" onclick="selectCard(3)">🎴</div>
+                <div class="tarot-card" onclick="selectCard(4)">🎴</div>
+            </div>
+        </div>
+
+        <div class="result-area" id="resultArea">
+            <div class="result-emoji" id="resultEmoji"></div>
+            <div class="result-title" id="resultTitle"></div>
+            <div class="result-content" id="resultContent"></div>
+            <div class="result-detail" id="resultDetail"></div>
+            <button class="btn" onclick="resetTarot()">다시 점치기</button>
+        </div>
+    </div>
+
+    <script>
+        // 타로 카드 데이터
+        const tarotCards = [
+            {
+                emoji: '🌟',
+                title: '별 (The Star)',
+                message: '희망과 영감이 가득한 하루입니다',
+                detail: '오늘은 당신의 꿈과 목표가 한 걸음 더 가까워지는 날입니다. 긍정적인 에너지가 넘치며, 주변 사람들에게도 좋은 영향을 줄 수 있어요. 새로운 시도를 두려워하지 마세요!'
+            },
+            {
+                emoji: '☀️',
+                title: '태양 (The Sun)',
+                message: '활력과 성공이 함께하는 날입니다',
+                detail: '모든 일이 순조롭게 풀리는 날입니다. 당신의 노력이 빛을 발하고, 주변 사람들로부터 인정받을 수 있어요. 자신감을 가지고 행동하면 더 좋은 결과를 얻을 수 있습니다.'
+            },
+            {
+                emoji: '🌙',
+                title: '달 (The Moon)',
+                message: '직관과 상상력이 빛나는 하루',
+                detail: '감성적이고 창의적인 아이디어가 떠오르는 날입니다. 직관을 믿고 내면의 목소리에 귀 기울이세요. 예술적인 활동이나 명상이 도움이 될 거예요.'
+            },
+            {
+                emoji: '⚡',
+                title: '탑 (The Tower)',
+                message: '변화와 새로운 시작의 신호',
+                detail: '예상치 못한 변화가 있을 수 있지만, 이는 더 나은 미래를 위한 과정입니다. 유연하게 대처하고 긍정적인 마음가짐을 유지하세요. 위기는 곧 기회입니다.'
+            },
+            {
+                emoji: '💖',
+                title: '연인 (The Lovers)',
+                message: '사랑과 조화가 가득한 날',
+                detail: '인간관계에서 특별한 순간을 맞이할 수 있습니다. 소중한 사람들과의 시간을 더 가치있게 만들고, 마음을 열고 소통하세요. 새로운 인연이 찾아올 수도 있어요.'
+            },
+            {
+                emoji: '🎭',
+                title: '마법사 (The Magician)',
+                message: '창조와 실현의 에너지',
+                detail: '당신이 원하는 것을 이룰 수 있는 능력과 자원이 모두 갖춰진 날입니다. 자신의 재능을 믿고 적극적으로 행동하세요. 놀라운 성과를 거둘 수 있습니다.'
+            },
+            {
+                emoji: '⚖️',
+                title: '정의 (Justice)',
+                message: '공정함과 균형의 날',
+                detail: '모든 일이 공정하게 처리되는 날입니다. 과거의 노력에 대한 정당한 보상을 받거나, 중요한 결정을 내릴 수 있어요. 객관적인 판단력이 빛을 발합니다.'
+            },
+            {
+                emoji: '🎡',
+                title: '운명의 수레바퀴 (Wheel of Fortune)',
+                message: '행운과 기회의 순환',
+                detail: '긍정적인 변화와 행운이 찾아오는 날입니다. 기회를 놓치지 말고 적극적으로 잡으세요. 인생의 전환점이 될 수 있는 특별한 하루가 될 거예요.'
+            },
+            {
+                emoji: '💪',
+                title: '힘 (Strength)',
+                message: '용기와 인내의 힘',
+                detail: '어려운 상황도 지혜롭게 극복할 수 있는 내면의 힘이 있습니다. 부드러움과 강인함의 조화로 문제를 해결하세요. 당신은 생각보다 훨씬 강한 사람입니다.'
+            },
+            {
+                emoji: '🌺',
+                title: '여황제 (The Empress)',
+                message: '풍요와 창조성의 날',
+                detail: '창조적인 에너지가 넘치고 풍요로운 하루입니다. 자연과 가까이 하거나 예술 활동을 하면 더욱 좋아요. 사랑과 돌봄의 에너지를 나누세요.'
+            }
+        ];
+
+        let selectedCards = [];
+        let selectedCount = 0;
+
+        // 낙엽 생성
+        function createLeaves() {
+            const leafEmojis = ['🍂', '🍁', '🍃'];
+            for (let i = 0; i < 30; i++) {
+                const leaf = document.createElement('div');
+                leaf.className = 'leaf';
+                leaf.textContent = leafEmojis[Math.floor(Math.random() * leafEmojis.length)];
+                leaf.style.left = Math.random() * 100 + 'vw';
+                leaf.style.animationDuration = (Math.random() * 10 + 10) + 's';
+                leaf.style.animationDelay = Math.random() * 5 + 's';
+                leaf.style.fontSize = (Math.random() * 20 + 20) + 'px';
+                document.body.appendChild(leaf);
+            }
+        }
+
+        // 카드 선택
+        function selectCard(index) {
+            if (selectedCount >= 3) return;
+            
+            const cards = document.querySelectorAll('.tarot-card');
+            const card = cards[index];
+            
+            if (card.classList.contains('flipped')) return;
+            
+            card.classList.add('flipped');
+            selectedCount++;
+            
+            // 랜덤 타로 카드 선택
+            const randomCard = tarotCards[Math.floor(Math.random() * tarotCards.length)];
+            selectedCards.push(randomCard);
+            
+            setTimeout(() => {
+                card.textContent = randomCard.emoji;
+            }, 300);
+            
+            if (selectedCount === 3) {
+                setTimeout(showResult, 1000);
+            }
+        }
+
+        // 결과 표시
+        function showResult() {
+            const mainCard = selectedCards[Math.floor(Math.random() * 3)];
+            
+            document.getElementById('resultEmoji').textContent = mainCard.emoji;
+            document.getElementById('resultTitle').textContent = mainCard.title;
+            document.getElementById('resultContent').textContent = mainCard.message;
+            document.getElementById('resultDetail').innerHTML = `
+                <h3 style="color: #667eea; margin-bottom: 15px;">오늘의 운세 상세</h3>
+                <p>${mainCard.detail}</p>
+                <p style="margin-top: 15px; color: #764ba2; font-weight: bold;">
+                    🍂 선택한 카드들이 말하는 오늘의 키워드: 
+                    ${selectedCards.map(c => c.emoji).join(' ')}
+                </p>
+            `;
+            
+            document.getElementById('resultArea').classList.add('show');
+        }
+
+        // 리셋
+        function resetTarot() {
+            selectedCards = [];
+            selectedCount = 0;
+            
+            const cards = document.querySelectorAll('.tarot-card');
+            cards.forEach(card => {
+                card.classList.remove('flipped');
+                card.textContent = '🎴';
+            });
+            
+            document.getElementById('resultArea').classList.remove('show');
+        }
+
+        // 초기화
+        createLeaves();
+    </script>
+</body>
+</html>
